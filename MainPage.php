@@ -37,9 +37,8 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         $task1 = new Task;
         $task1->setName($name)->setDescription($description);
         echo ("Object created<br>");
-        $_SESSION['task1'] = serialize($task1);
-        echo "Session added<br>";
-        }else{
+        $_SESSION['newtask'][] = serialize($task1);
+    }else{
         echo ("Empty task - not created");
     }
 }else{
