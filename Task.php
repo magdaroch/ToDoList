@@ -10,24 +10,41 @@ class Task
 {
     protected $name;
     protected $description;
+    protected $isFinished;
 
     /**
      * Task constructor.
      * @param $name
      * @param $description
      */
-    public function __construct($name = "Unknown", $description = "No info")
+    public function __construct($name = "Unknown", $description = "No info", $isFinished = FALSE)
     {
-        echo ("The task is created<br>");
+        //echo ("The task is created<br>");
         $this->setName($name);
         $this->setDescription($description);
     }
 
     public function printInfo($name, $description){
-        echo ("The name of the task is: $name <br>");
-        echo ("The task description is: $description <br>");
+        if($this->isFinished === TRUE){
+            echo ("<strike>Name:<br> $name </strike><br>");
+            echo ("<strike>Description:<br> $description </strike><br><br>");
+        }else{
+            echo ("Name:<br> $name <br>");
+            echo ("Description:<br> $description <br><br>");
+        }
     }
 
+    public function finishTask(){
+        echo ("lol");
+        // return !$this->getIsFinished();
+    }
+    /**
+     * @return mixed
+     */
+    public function getIsFinished()
+    {
+        return $this->isFinished;
+    }
     /**
      * @return mixed
      */
@@ -41,7 +58,7 @@ class Task
      */
     public function setName($name)
     {
-        if(is_string($name) && strlen(trim($name)) < 0){
+        if(is_string($name) && strlen(trim($name)) > 0){
             $this->name = $name;
         }
         return $this;
@@ -68,7 +85,7 @@ class Task
 
     public function __destruct()
     {
-        echo ("The task is destroyed<br>");
+        //echo ("The task is destroyed<br>");
     }
 
 

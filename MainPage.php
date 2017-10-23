@@ -11,13 +11,13 @@
       <button type="submit">Add New Task</button>
 </form>
 <?php
-session_start();
 /**
  * Created by PhpStorm.
  * User: Magda
  * Date: 2017-10-22
  * Time: 21:13
  */
+session_start();
 require_once "Task.php";
 
 if($_SERVER['REQUEST_METHOD'] === 'POST'){
@@ -36,14 +36,43 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     if($name != "" && $description != ""){
         $task1 = new Task;
         $task1->setName($name)->setDescription($description);
-        echo ("Object created<br>");
-        $_SESSION['newtask'][] = serialize($task1);
+        //var_dump($task1);
+        if(isset($_SESSION['tasks'])){
+            array_push($_SESSION['tasks'], serialize($task1));
+        }else{
+            $_SESSION['tasks'] = array();
+            array_push($_SESSION['tasks'], serialize($task1));
+        }
     }else{
         echo ("Empty task - not created");
     }
 }else{
     echo ("No information found");
 }
+if(isset($_SESSION['tasks'])){
+    foreach ($_SESSION['tasks'] as $task){
+        echo("Task <br>");
+        $task = unserialize($task);
+        $task->printInfo($task->getName(),$task->getDescription());
+        echo("
+<form action='MainPage.php' method='get'>
+    <input type='submit' name='name' value='" . $task->getName() . "'>
+</form>
+        ");
+    }
+}
+
+if($_SERVER['REQUEST_METHOD'] === 'GET'){
+    if(isset($_GET['name']) === TRUE && isset($_SESSION['tasks']) === TRUE){
+        foreach ($_SESSION['tasks'] as $task){
+            $task=unserialize($task);
+            if($_GET['name'] == $task->getName()){
+                $task->finishTask();
+            }
+        }
+    }
+}
+
 ?>
 </body>
 </html>
