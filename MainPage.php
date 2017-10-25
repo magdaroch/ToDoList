@@ -36,7 +36,6 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     if($name != "" && $description != ""){
         $task1 = new Task;
         $task1->setName($name)->setDescription($description);
-        //var_dump($task1);
         if(isset($_SESSION['tasks'])){
             array_push($_SESSION['tasks'], serialize($task1));
         }else{
@@ -46,14 +45,12 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     }else{
         echo ("Empty task - not created");
     }
-}else{
-    echo ("No information found");
 }
 if(isset($_SESSION['tasks'])){
     foreach ($_SESSION['tasks'] as $task){
         echo("Task <br>");
         $task = unserialize($task);
-        $task->printInfo($task->getName(),$task->getDescription());
+            $task->printInfo($task->getName(),$task->getDescription());
         echo("
 <form action='MainPage.php' method='get'>
     <input type='submit' name='name' value='" . $task->getName() . "'>
@@ -66,12 +63,15 @@ if($_SERVER['REQUEST_METHOD'] === 'GET'){
     if(isset($_GET['name']) === TRUE && isset($_SESSION['tasks']) === TRUE){
         foreach ($_SESSION['tasks'] as $task){
             $task=unserialize($task);
-            if($_GET['name'] == $task->getName()){
-                $task->finishTask();
+            if($_GET['name'] === $task->getName()){
+                unset($_SESSION['tasks'][serialize($task)]);
+                $task->finishTask(TRUE);
+                $task->printInfo($task->getName(),$task->getDescription());
             }
         }
     }
 }
+var_dump($_SESSION['tasks']);
 
 ?>
 </body>

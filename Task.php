@@ -22,10 +22,11 @@ class Task
         //echo ("The task is created<br>");
         $this->setName($name);
         $this->setDescription($description);
+        $this->finishTask($isFinished);
     }
 
     public function printInfo($name, $description){
-        if($this->isFinished === TRUE){
+        if($this->getIsFinished() == TRUE){
             echo ("<strike>Name:<br> $name </strike><br>");
             echo ("<strike>Description:<br> $description </strike><br><br>");
         }else{
@@ -34,9 +35,11 @@ class Task
         }
     }
 
-    public function finishTask(){
-        echo ("lol");
-        // return !$this->getIsFinished();
+    public function finishTask($isFinished){
+        if($isFinished == TRUE || $isFinished == FALSE){
+            $this->isFinished = $isFinished;
+        }
+        return $this;
     }
     /**
      * @return mixed
